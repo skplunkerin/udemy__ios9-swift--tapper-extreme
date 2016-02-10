@@ -9,17 +9,75 @@
 import UIKit
 
 class ViewController: UIViewController {
+    
+    // Properties
+    var maxTaps: Int = 0
+    var currentTaps: Int = 0
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
+    // Outlets
+    @IBOutlet weak var logoImg: UIImageView!
+    @IBOutlet weak var howManyTapsTxt: UITextField!
+    @IBOutlet weak var playBtn: UIButton!
+    
+    @IBOutlet weak var coinTapBtn: UIButton!
+    @IBOutlet weak var tapsLbl: UILabel!
+    
+    @IBAction func onPlayBtnPressed(sender: UIButton!){
+        if howManyTapsTxt.text != nil && howManyTapsTxt.text != "" {
+            showHideGameStart()
+            showHideCoinTapper()
+        
+            maxTaps = Int( howManyTapsTxt.text! )!
+            currentTaps = 0
+            
+            updateTapsLbl()
+        }
     }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    
+    @IBAction func onCoinBtnPressed(sender: UIButton!){
+        currentTaps++
+        updateTapsLbl()
+        if isGameOver() {
+            howManyTapsTxt.text = ""
+            maxTaps = 0
+            showHideGameStart()
+            showHideCoinTapper()
+        }
     }
-
+    
+    func updateTapsLbl(){
+        tapsLbl.text = "\(currentTaps) Taps"
+    }
+    
+    func showHideGameStart() {
+        if logoImg.hidden {
+            logoImg.hidden = false
+            howManyTapsTxt.hidden = false
+            playBtn.hidden = false
+        } else {
+            logoImg.hidden = true
+            howManyTapsTxt.hidden = true
+            playBtn.hidden = true
+        }
+    }
+    
+    func showHideCoinTapper() {
+        if coinTapBtn.hidden {
+            coinTapBtn.hidden = false
+            tapsLbl.hidden = false
+        } else {
+            coinTapBtn.hidden = true
+            tapsLbl.hidden = true
+        }
+    }
+    
+    func isGameOver() -> Bool {
+        if currentTaps >= maxTaps {
+            return true
+        } else {
+            return false
+        }
+    }
 
 }
 
